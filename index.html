@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ckb" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Eye of the State - Biometric System</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background-color: #0d0d0d;
+      color: #00ff66;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      background: #141414;
+      border: 1px solid #00ff66;
+      box-shadow: 0 0 15px rgba(0, 255, 102, 0.2);
+      border-radius: 12px;
+      width: 100%;
+      max-width: 480px;
+      padding: 20px;
+      text-align: center;
+    }
+    .header-logo {
+      width: 120px;
+      height: 120px;
+      background: #fff;
+      border-radius: 50%;
+      margin: 0 auto 15px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #00ff66;
+      overflow: hidden;
+    }
+    .header-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    h2 {
+      font-size: 16px;
+      color: #ffffff;
+      letter-spacing: 1px;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+    }
+    .subtitle {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 20px;
+    }
+    .upload-btn {
+      background: #00ff66;
+      color: #000;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      display: inline-block;
+      margin-bottom: 15px;
+      transition: 0.3s;
+    }
+    .upload-btn:hover {
+      background: #00cc52;
+    }
+    input[type="file"] {
+      display: none;
+    }
+    .scan-area {
+      position: relative;
+      width: 200px;
+      height: 240px;
+      margin: 10px auto;
+      border: 2px dashed #333;
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #080808;
+    }
+    .scan-area img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+    .scan-line {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: #00ff66;
+      box-shadow: 0 0 10px #00ff66;
+      display: none;
+      animation: scan 2s infinite linear;
+    }
+    @keyframes scan {
+      0% { top: 0; }
+      50% { top: 100%; }
+      100% { top: 0; }
+    }
+    .status-text {
+      font-size: 13px;
+      color: #ffcc00;
+      margin: 10px 0;
+      min-height: 20px;
+    }
+    .data-card {
+      background: #1e1e1e;
+      border-right: 4px solid #00ff66;
+      padding: 15px;
+      border-radius: 6px;
+      text-align: right;
+      margin-top: 15px;
+      display: none;
+      font-size: 14px;
+    }
+    .data-row {
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #2a2a2a;
+      padding-bottom: 4px;
+    }
+    .data-row:last-child {
+      border-bottom: none;
+    }
+    .label {
+      color: #aaa;
+    }
+    .value {
+      color: #fff;
+      font-weight: bold;
+    }
+    .badge {
+      background: #00ff66;
+      color: #000;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Header / Logo -->
+  <div class="header-logo">
+    <!-- SVG Representation of The Eye of the State Logo -->
+    <svg width="100" height="100" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="45" fill="none" stroke="#000" stroke-width="2"/>
+      <circle cx="50" cy="25" r="8" fill="none" stroke="#000" stroke-width="1.5"/>
+      <circle cx="50" cy="25" r="3" fill="#000"/>
+      <polygon points="50,12 38,32 62,32" fill="none" stroke="#000" stroke-width="1.5"/>
+      <path d="M 20,55 Q 50,35 80,55 Q 50,85 20,55 Z" fill="none" stroke="#000" stroke-width="2"/>
+      <path d="M 25,55 Q 50,45 75,55" fill="none" stroke="#000" stroke-width="1"/>
+      <text x="50" y="90" font-size="8" text-anchor="middle" fill="#000" font-weight="bold">چاوی دەوڵەت</text>
+    </svg>
+  </div>
+  
+  <h2>BIOMETRIC FINDER SYSTEM</h2>
+  <div class="subtitle">چاوی دەوڵەت - سیستەمی ناسینەوەی بایۆمەتری</div>
+
+  <label class="upload-btn" for="photoInput">دەستنیشانکردنی وێنە</label>
+  <input type="file" id="photoInput" accept="image/*">
+
+  <!-- Image Scanning Area -->
+  <div class="scan-area">
+    <div class="scan-line" id="scanLine"></div>
+    <img id="userImage" src="" alt="User Target">
+  </div>
+
+  <div class="status-text" id="statusText">تکایە وێنەیەکە هەڵبژێرە...</div>
+
+  <!-- Data Results -->
+  <div class="data-card" id="dataCard">
+    <div style="display: flex; justify-out: space-between; align-items: center; margin-bottom: 10px;">
+      <span class="badge">DECRYPTED</span>
+      <span style="font-size: 11px; color: #888;">ID: 4893703</span>
+    </div>
+    
+    <div class="data-row">
+      <span class="label">ناوی تەواو:</span>
+      <span class="value" id="resName">یوسف مەحمود کەریم ئیسماعیل</span>
+    </div>
+    <div class="data-row">
+      <span class="label">ژمارەی بەڵگەنامە:</span>
+      <span class="value">1896504</span>
+    </div>
+    <div class="data-row">
+      <span class="label">ناوی پارێزگا:</span>
+      <span class="value">سلێمانی / ناوەند</span>
+    </div>
+    <div class="data-row">
+      <span class="label">بارودۆخی ئەمنی:</span>
+      <span class="value" style="color: #00ff66;">تەواو / بێ کێشە</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  const photoInput = document.getElementById('photoInput');
+  const userImage = document.getElementById('userImage');
+  const scanLine = document.getElementById('scanLine');
+  const statusText = document.getElementById('statusText');
+  const dataCard = document.getElementById('dataCard');
+
+  photoInput.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+      // Show Preview
+      userImage.src = URL.createObjectURL(file);
+      userImage.style.display = 'block';
+      scanLine.style.display = 'block';
+      dataCard.style.display = 'none';
+
+      // Animation steps
+      statusText.innerText = "پەیوەندی بە سێرڤەرەوە دەکرێت...";
+      statusText.style.color = "#ffcc00";
+
+      setTimeout(() => {
+        statusText.innerText = "شیکردنەوەی خاڵەکانی ڕووخسار (Facial Landmarks)...";
+      }, 1500);
+
+      setTimeout(() => {
+        statusText.innerText = "زانیارییەکان بە سەرکەوتوویی دۆزرانەوە!";
+        statusText.style.color = "#00ff66";
+        scanLine.style.display = 'none';
+        dataCard.style.display = 'block';
+      }, 3500);
+    }
+  });
+</script>
+
+</body>
+</html>
